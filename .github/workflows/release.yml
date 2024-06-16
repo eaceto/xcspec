@@ -1,0 +1,411 @@
+name: Create a release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+        default: ''
+      build_linux:
+        description: 'Build for Linux'
+        required: true
+        default: true
+        type: boolean
+      build_macos:
+        description: 'Build for macOS'
+        required: true
+        default: true
+        type: boolean
+      build_windows:
+        description: 'Build for Windows'
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        if: inputs.build_linux == true
+        uses: actions/checkout@v2
+
+      - name: Set up Rust
+        if: inputs.build_linux == true
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      - name: Install cross
+        if: inputs.build_linux == true
+        run: cargo install cross
+
+      - name: Add Rust targets for Linux
+        if: inputs.build_linux == true
+        run: |
+          rustup target add x86_64-unknown-linux-gnu
+          rustup target add aarch64-unknown-linux-gnu
+
+      - name: Build project for Linux x86_64
+        if: inputs.build_linux == true
+        run: cross build --release --target x86_64-unknown-linux-gnu
+        env:
+          CARGO_TARGET_DIR: target
+
+      - name: List directory for Linux x86_64
+        if: inputs.build_linux == true
+        run: ls -al target/x86_64-unknown-linux-gnu/release
+
+      - name: Rename Linux x86_64 binary
+        if: inputs.build_linux == true
+        run: mv target/x86_64-unknown-linux-gnu/release/xcspec target/x86_64-unknown-linux-gnu/release/xcspec-linux-x86_64
+
+      - name: Build project for Linux arm64
+        if: inputs.build_linux == true
+        run: cross build --release --target aarch64-unknown-linux-gnu
+        env:
+          CARGO_TARGET_DIR: target
+
+      - name: List directory for Linux arm64
+        if: inputs.build_linux == true
+        run: ls -al target/aarch64-unknown-linux-gnu/release
+
+      - name: Rename Linux arm64 binary
+        if: inputs.build_linux == true
+        run: mv target/aarch64-unknown-linux-gnu/release/xcspec target/aarch64-unknown-linux-gnu/release/xcspec-linux-arm64
+
+      - name: Upload Linux x86_64 binary
+        if: inputs.build_linux == true
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcspec-linux-x86_64
+          path: target/x86_64-unknown-linux-gnu/release/xcspec-linux-x86_64
+
+      - name: Upload Linux arm64 binary
+        if: inputs.build_linux == true
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcspec-linux-arm64
+          path: target/aarch64-unknown-linux-gnu/release/xcspec-linux-arm64
+
+  build-macos:
+    runs-on: macos-latest
+
+    steps:  
+      - name: Checkout code
+        if: inputs.build_macos == true
+        uses: actions/checkout@v2
+
+      - name: Set up Rust
+        if: inputs.build_macos == true
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      - name: Add Rust targets for macOS
+        if: inputs.build_macos == true
+        run: |
+          rustup target add x86_64-apple-darwin
+          rustup target add aarch64-apple-darwin
+
+      - name: Build project for macOS x86_64
+        if: inputs.build_macos == true
+        run: cargo build --release --target x86_64-apple-darwin
+        env:
+          CARGO_TARGET_DIR: target
+
+      - name: List directory for macOS x86_64
+        if: inputs.build_macos == true
+        run: ls -al target/x86_64-apple-darwin/release
+
+      - name: Rename macOS x86_64 binary
+        if: inputs.build_macos == true
+        run: mv target/x86_64-apple-darwin/release/xcspec target/x86_64-apple-darwin/release/xcspec-macos-x86_64
+
+      - name: Build project for macOS arm64
+        if: inputs.build_macos == true
+        run: cargo build --release --target aarch64-apple-darwin
+        env:
+          CARGO_TARGET_DIR: target
+
+      - name: List directory for macOS arm64
+        if: inputs.build_macos == true
+        run: ls -al target/aarch64-apple-darwin/release
+
+      - name: Rename macOS arm64 binary
+        if: inputs.build_macos == true
+        run: mv target/aarch64-apple-darwin/release/xcspec target/aarch64-apple-darwin/release/xcspec-macos-arm64
+
+      - name: Upload macOS x86_64 binary
+        if: inputs.build_macos == true
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcspec-macos-x86_64
+          path: target/x86_64-apple-darwin/release/xcspec-macos-x86_64
+
+      - name: Upload macOS arm64 binary
+        if: inputs.build_macos == true
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcspec-macos-arm64
+          path: target/aarch64-apple-darwin/release/xcspec-macos-arm64
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps: 
+      - name: Checkout code
+        if: inputs.build_windows == true
+        uses: actions/checkout@v2
+
+      - name: Set up Rust
+        if: inputs.build_windows == true
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      - name: Add Rust targets for Windows
+        if: inputs.build_windows == true
+        run: |
+          rustup target add x86_64-pc-windows-msvc
+          rustup target add aarch64-pc-windows-msvc
+
+      - name: Build project for Windows x86_64
+        if: inputs.build_windows == true
+        run: cargo build --release --target x86_64-pc-windows-msvc
+        env:
+          CARGO_TARGET_DIR: target
+
+      - name: List directory for Windows x86_64
+        if: inputs.build_windows == true
+        run: dir target\x86_64-pc-windows-msvc\release
+
+      - name: Rename Windows x86_64 binary
+        if: inputs.build_windows == true
+        run: mv target\x86_64-pc-windows-msvc\release\xcspec.exe target\x86_64-pc-windows-msvc\release\xcspec-windows-x86_64.exe
+
+      - name: Build project for Windows arm64
+        if: inputs.build_windows == true
+        run: cargo build --release --target aarch64-pc-windows-msvc
+        env:
+          CARGO_TARGET_DIR: target
+
+      - name: List directory for Windows arm64
+        if: inputs.build_windows == true
+        run: dir target\aarch64-pc-windows-msvc\release
+
+      - name: Rename Windows arm64 binary
+        if: inputs.build_windows == true
+        run: mv target\aarch64-pc-windows-msvc\release\xcspec.exe target\aarch64-pc-windows-msvc\release\xcspec-windows-arm64.exe
+
+      - name: Upload Windows x86_64 binary
+        if: inputs.build_windows == true
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcspec-windows-x86_64
+          path: target/x86_64-pc-windows-msvc/release/xcspec-windows-x86_64.exe
+
+      - name: Upload Windows arm64 binary
+        if: inputs.build_windows == true
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcspec-windows-arm64
+          path: target/aarch64-pc-windows-msvc/release/xcspec-windows-arm64.exe
+
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-linux, build-macos, build-windows]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create directories for binaries
+        run: |
+          mkdir -p ./target/x86_64-unknown-linux-gnu/release
+          mkdir -p ./target/aarch64-unknown-linux-gnu/release
+          mkdir -p ./target/x86_64-apple-darwin/release
+          mkdir -p ./target/aarch64-apple-darwin/release
+          mkdir -p ./target/x86_64-pc-windows-msvc/release
+          mkdir -p ./target/aarch64-pc-windows-msvc/release
+
+      - name: Download Linux x86_64 binary
+        if: inputs.build_linux == true
+        uses: actions/download-artifact@v2
+        with:
+          name: xcspec-linux-x86_64
+          path: ./target/x86_64-unknown-linux-gnu/release
+
+      - name: Download Linux arm64 binary
+        if: inputs.build_linux == true
+        uses: actions/download-artifact@v2
+        with:
+          name: xcspec-linux-arm64
+          path: ./target/aarch64-unknown-linux-gnu/release
+
+      - name: Download macOS x86_64 binary
+        if: inputs.build_macos == true
+        uses: actions/download-artifact@v2
+        with:
+          name: xcspec-macos-x86_64
+          path: ./target/x86_64-apple-darwin/release
+
+      - name: Download macOS arm64 binary
+        if: inputs.build_macos == true
+        uses: actions/download-artifact@v2
+        with:
+          name: xcspec-macos-arm64
+          path: ./target/aarch64-apple-darwin/release
+
+      - name: Download Windows x86_64 binary
+        if: inputs.build_windows == true
+        uses: actions/download-artifact@v2
+        with:
+          name: xcspec-windows-x86_64
+          path: ./target/x86_64-pc-windows-msvc/release
+
+      - name: Download Windows arm64 binary
+        if: inputs.build_windows == true
+        uses: actions/download-artifact@v2
+        with:
+          name: xcspec-windows-arm64
+          path: ./target/aarch64-pc-windows-msvc/release
+
+      - name: List downloaded binaries
+        run: ls -al ./target
+
+      - name: Set up GitHub CLI
+        run: |
+          (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
+          && sudo mkdir -p -m 755 /etc/apt/keyrings \
+          && wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+          && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+          && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+          && sudo apt update \
+          && sudo apt install gh -y
+
+      - name: Authenticate GitHub CLI
+        run: |
+          echo ${{ secrets.GH_TOKEN }} | gh auth login --with-token
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "ezequiel.aceto@gmail.com"
+          git config --global user.name "Ezequiel (Kimi) Aceto"
+
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@v1.2.1"
+        with:
+          repo_token: "${{ secrets.GH_TOKEN }}"
+          automatic_release_tag: "${{ github.event.inputs.version }}"
+          prerelease: false
+          title: "Release ${{ github.event.inputs.version }}"
+          files: |
+            ./target/x86_64-unknown-linux-gnu/release/xcspec-linux-x86_64
+            ./target/aarch64-unknown-linux-gnu/release/xcspec-linux-arm64
+            ./target/x86_64-apple-darwin/release/xcspec-macos-x86_64
+            ./target/aarch64-apple-darwin/release/xcspec-macos-arm64
+            ./target/x86_64-pc-windows-msvc/release/xcspec-windows-x86_64.exe
+            ./target/aarch64-pc-windows-msvc/release/xcspec-windows-arm64.exe
+
+      - name: Create Homebrew Formula
+        env:
+          REPO_OWNER: eaceto
+          REPO_NAME: xcspec
+          FORMULA_FILE_NAME: xcspec
+          FORMULA_NAME: Xcspec
+          BINARY_NAME: xcspec
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          VERSION: ${{ github.event.inputs.version }}
+        run: |
+          SHA256_LINUX_X86_64=""
+          SHA256_LINUX_ARM64=""
+          SHA256_MACOS_X86_64=""
+          SHA256_MACOS_ARM64=""
+          SHA256_WINDOWS_X86_64=""
+          SHA256_WINDOWS_ARM64=""
+          
+          if [[ "${{ inputs.build_linux }}" == "true" ]]; then
+            SHA256_LINUX_X86_64=$(shasum -a 256 target/x86_64-unknown-linux-gnu/release/${BINARY_NAME}-linux-x86_64 | cut -d' ' -f1)
+            SHA256_LINUX_ARM64=$(shasum -a 256 target/aarch64-unknown-linux-gnu/release/${BINARY_NAME}-linux-arm64 | cut -d' ' -f1)
+          fi
+          if [[ "${{ inputs.build_macos }}" == "true" ]]; then
+            SHA256_MACOS_X86_64=$(shasum -a 256 target/x86_64-apple-darwin/release/${BINARY_NAME}-macos-x86_64 | cut -d' ' -f1)
+            SHA256_MACOS_ARM64=$(shasum -a 256 target/aarch64-apple-darwin/release/${BINARY_NAME}-macos-arm64 | cut -d' ' -f1)
+          fi
+          if [[ "${{ inputs.build_windows }}" == "true" ]]; then
+            SHA256_WINDOWS_X86_64=$(shasum -a 256 target/x86_64-pc-windows-msvc/release/${BINARY_NAME}-windows-x86_64.exe | cut -d' ' -f1)
+            SHA256_WINDOWS_ARM64=$(shasum -a 256 target/aarch64-pc-windows-msvc/release/${BINARY_NAME}-windows-arm64.exe | cut -d' ' -f1)
+          fi
+          
+          cat <<EOF > $FORMULA_FILE_NAME.rb
+          class $FORMULA_NAME < Formula
+            desc "A tool to inspect iOS, macOS and Apple-like frameworks"
+            homepage "https://github.com/$REPO_OWNER/$REPO_NAME"
+            version "$VERSION"
+
+            if OS.mac?
+              if Hardware::CPU.intel?
+                url "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$VERSION/${BINARY_NAME}-macos-x86_64"
+                sha256 "$SHA256_MACOS_X86_64"
+                def install
+                  bin.install "${BINARY_NAME}-macos-x86_64" => "$BINARY_NAME"
+                end
+              elsif Hardware::CPU.arm?
+                url "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$VERSION/${BINARY_NAME}-macos-arm64"
+                sha256 "$SHA256_MACOS_ARM64"
+                def install
+                  bin.install "${BINARY_NAME}-macos-arm64" => "$BINARY_NAME"
+                end
+              end
+            elsif OS.linux?
+              if Hardware::CPU.intel?
+                url "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$VERSION/${BINARY_NAME}-linux-x86_64"
+                sha256 "$SHA256_LINUX_X86_64"
+                def install
+                  bin.install "${BINARY_NAME}-linux-x86_64" => "$BINARY_NAME"
+                end
+              elsif Hardware::CPU.arm?
+                url "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$VERSION/${BINARY_NAME}-linux-arm64"
+                sha256 "$SHA256_LINUX_ARM64"
+                def install
+                  bin.install "${BINARY_NAME}-linux-arm64" => "$BINARY_NAME"
+                end
+              end
+            elsif OS.windows?
+              if Hardware::CPU.intel?
+                url "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$VERSION/${BINARY_NAME}-windows-x86_64.exe"
+                sha256 "$SHA256_WINDOWS_X86_64"
+                def install
+                  bin.install "${BINARY_NAME}-windows-x86_64.exe" => "$BINARY_NAME.exe"
+                end
+              elsif Hardware::CPU.arm?
+                url "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$VERSION/${BINARY_NAME}-windows-arm64.exe"
+                sha256 "$SHA256_WINDOWS_ARM64"
+                def install
+                  bin.install "${BINARY_NAME}-windows-arm64.exe" => "$BINARY_NAME.exe"
+                end
+              end
+            end
+
+            test do
+              assert_match "$BINARY_NAME, version", shell_output("#{bin}/$BINARY_NAME --version")
+            end
+          end
+          EOF
+
+          git clone "https://${GITHUB_TOKEN}@github.com/$REPO_OWNER/homebrew-tools.git"
+          cd homebrew-tools
+          mv "../$FORMULA_FILE_NAME.rb" "Formula/$FORMULA_FILE_NAME.rb"
+          git add "Formula/$FORMULA_FILE_NAME.rb"
+          git commit -m "Release $FORMULA_NAME $VERSION"
+          git push origin main
