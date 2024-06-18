@@ -1,14 +1,14 @@
 use clap::{arg, command, Parser};
 // Importing macros and traits from the clap crate.
 
-use plist_processing::collect_framework_info;
-// Importing the collect_framework_info function from the plist_processing module.
+use xcframework_processing::collect_framework_info;
+// Importing the collect_framework_info function from the xcframework_processing module.
 
 mod framework_info;
 // Declaring the framework_info module.
 
-mod plist_processing;
-// Declaring the plist_processing module.
+mod xcframework_processing;
+// Declaring the xcframework_processing module.
 
 mod utils;
 // Declaring the utils module.
