@@ -5,7 +5,6 @@ use zip::ZipArchive;
 use crate::framework_info::{LibraryInfo, PrivacyInfo};
 use crate::utils::{calculate_library_size, ensure_unique_ordered};
 use crate::framework_info::{AccessedAPIType, CollectedDataType};
-use crate::xcframework_processing::extractors;
 
 pub fn extract_privacy_info(
     archive: &mut ZipArchive<File>,
