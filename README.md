@@ -83,98 +83,265 @@ xcspec --file path_to_xcframework.zip -output info.json
 
 ```json
 {
-  "framework_name": "Multiplatform",
-  "framework_version": "1.0",
-  "is_mergeable": false,
+  "framework_name": "TestFramework",
+  "is_mergeable": true,
   "swift_compiler_info": "Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)",
   "swift_compiler_version": "5.10.0.13",
   "swift_version": "5",
   "library_evolution_enabled": true,
-  "built_for_distribution": false,
-  "privacy_info": {
-    "present": true,
-    "tracking": true,
-    "tracking_domains": [
-      "ep1.facebook.com"
-    ],
-    "collected_data_types": [
-      {
-        "collected_data_type": "NSPrivacyCollectedDataTypeOtherDataTypes",
-        "collected_data_type_linked": false,
-        "collected_data_type_tracking": false,
-        "collected_data_type_purposes": [
-          "NSPrivacyCollectedDataTypePurposeAnalytics"
-        ]
-      },
-      {
-        "collected_data_type": "NSPrivacyCollectedDataTypeCrashData",
-        "collected_data_type_linked": false,
-        "collected_data_type_tracking": false,
-        "collected_data_type_purposes": [
-          "NSPrivacyCollectedDataTypePurposeAppFunctionality"
-        ]
-      },
-      {
-        "collected_data_type": "NSPrivacyCollectedDataTypeDeviceID",
-        "collected_data_type_linked": true,
-        "collected_data_type_tracking": true,
-        "collected_data_type_purposes": [
-          "NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising",
-          "NSPrivacyCollectedDataTypePurposeAppFunctionality",
-          "NSPrivacyCollectedDataTypePurposeAnalytics"
+  "built_for_distribution": true,
+  "available_libraries": [
+    {
+      "binary_path": "TestFramework.framework/TestFramework",
+      "library_identifier": "ios-arm64_x86_64-simulator",
+      "library_path": "TestFramework.framework",
+      "marketing_version": "1.0",
+      "mergeable_metadata": true,
+      "supported_architectures": [
+        "arm64",
+        "x86_64"
+      ],
+      "supported_platform": "ios",
+      "supported_platform_variant": "simulator",
+      "size": "170.85 KB",
+      "dependencies": [
+        "AVRouting",
+        "Accounts",
+        "ContactsUI",
+        "Foundation",
+        "Swift",
+        "_Concurrency",
+        "_StringProcessing",
+        "_SwiftConcurrencyShims"
+      ],
+      "privacy_info": {
+        "present": true,
+        "tracking": true,
+        "tracking_domains": [
+          "domain1.com",
+          "domain2.com"
+        ],
+        "collected_data_types": [
+          {
+            "data_type": "NSPrivacyCollectedDataTypeUserID",
+            "linked_to_user": true,
+            "tracking": false,
+            "purposes": [
+              "NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising",
+              "NSPrivacyCollectedDataTypePurposeDeveloperAdvertising",
+              "NSPrivacyCollectedDataTypePurposeAnalytics",
+              "NSPrivacyCollectedDataTypePurposeProductPersonalization"
+            ]
+          },
+          {
+            "data_type": "NSPrivacyCollectedDataTypeDeviceID",
+            "linked_to_user": true,
+            "tracking": true,
+            "purposes": [
+              "",
+              "NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising",
+              "NSPrivacyCollectedDataTypePurposeDeveloperAdvertising",
+              "NSPrivacyCollectedDataTypePurposeAnalytics",
+              "NSPrivacyCollectedDataTypePurposeProductPersonalization"
+            ]
+          },
+          {
+            "data_type": "NSPrivacyCollectedDataTypeProductInteraction",
+            "linked_to_user": true,
+            "tracking": true,
+            "purposes": [
+              "NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising",
+              "NSPrivacyCollectedDataTypePurposeDeveloperAdvertising",
+              "NSPrivacyCollectedDataTypePurposeAnalytics",
+              "NSPrivacyCollectedDataTypePurposeProductPersonalization",
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
+          {
+            "data_type": "NSPrivacyCollectedDataTypeAdvertisingData",
+            "linked_to_user": true,
+            "tracking": true,
+            "purposes": [
+              "NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising",
+              "NSPrivacyCollectedDataTypePurposeDeveloperAdvertising"
+            ]
+          },
+          {
+            "data_type": "NSPrivacyCollectedDataTypeOtherUsageData",
+            "linked_to_user": true,
+            "tracking": true,
+            "purposes": [
+              "NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising",
+              "NSPrivacyCollectedDataTypePurposeDeveloperAdvertising",
+              "NSPrivacyCollectedDataTypePurposeAnalytics",
+              "NSPrivacyCollectedDataTypePurposeProductPersonalization",
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
+          {
+            "data_type": "NSPrivacyCollectedDataTypeCrashData",
+            "linked_to_user": true,
+            "tracking": false,
+            "purposes": [
+              "NSPrivacyCollectedDataTypePurposeAnalytics",
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
+          {
+            "data_type": "NSPrivacyCollectedDataTypeOtherDiagnosticData",
+            "linked_to_user": true,
+            "tracking": true,
+            "purposes": [
+              "NSPrivacyCollectedDataTypePurposeAnalytics",
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          }
+        ],
+        "accessed_api_types": [
+          {
+            "api": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "reasons": [
+              "1C8F.1"
+            ]
+          },
+          {
+            "api": "NSPrivacyAccessedAPICategoryFileTimestamp",
+            "reasons": [
+              "C617.1"
+            ]
+          },
+          {
+            "api": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "reasons": [
+              "CA92.1"
+            ]
+          },
+          {
+            "api": "NSPrivacyAccessedAPICategorySystemBootTime",
+            "reasons": [
+              "35F9.1"
+            ]
+          },
+          {
+            "api": "NSPrivacyAccessedAPICategoryDiskSpace",
+            "reasons": [
+              "E174.1"
+            ]
+          }
         ]
       }
-    ],
-    "accessed_api_types": [
-      {
-        "accessed_api_type": "NSPrivacyAccessedAPICategoryUserDefaults",
-        "accessed_api_type_reasons": [
-          "CA92.1"
-        ]
-      }
-    ]
-  }
+    }
+  ]
 }
 ```
 
 #### YAML
 
 ````yml
-framework_name: Multiplatform
-framework_version: '1.0'
-is_mergeable: false
+framework_name: TestFramework
+is_mergeable: true
 swift_compiler_info: Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)
 swift_compiler_version: 5.10.0.13
 swift_version: '5'
 library_evolution_enabled: true
-built_for_distribution: false
-privacy_info:
-  present: true
-  tracking: true
-  tracking_domains:
-  - ep1.facebook.com
-  collected_data_types:
-  - collected_data_type: NSPrivacyCollectedDataTypeOtherDataTypes
-    collected_data_type_linked: false
-    collected_data_type_tracking: false
-    collected_data_type_purposes:
-    - NSPrivacyCollectedDataTypePurposeAnalytics
-  - collected_data_type: NSPrivacyCollectedDataTypeCrashData
-    collected_data_type_linked: false
-    collected_data_type_tracking: false
-    collected_data_type_purposes:
-    - NSPrivacyCollectedDataTypePurposeAppFunctionality
-  - collected_data_type: NSPrivacyCollectedDataTypeDeviceID
-    collected_data_type_linked: true
-    collected_data_type_tracking: true
-    collected_data_type_purposes:
-    - NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising
-    - NSPrivacyCollectedDataTypePurposeAppFunctionality
-    - NSPrivacyCollectedDataTypePurposeAnalytics
-  accessed_api_types:
-  - accessed_api_type: NSPrivacyAccessedAPICategoryUserDefaults
-    accessed_api_type_reasons:
-    - CA92.1
+built_for_distribution: true
+available_libraries:
+  - binary_path: TestFramework.framework/TestFramework
+    library_identifier: ios-arm64_x86_64-simulator
+    library_path: TestFramework.framework
+    marketing_version: '1.0'
+    mergeable_metadata: true
+    supported_architectures:
+      - arm64
+      - x86_64
+    supported_platform: ios
+    supported_platform_variant: simulator
+    size: 170.85 KB
+    dependencies:
+      - AVRouting
+      - Accounts
+      - ContactsUI
+      - Foundation
+      - Swift
+      - _Concurrency
+      - _StringProcessing
+      - _SwiftConcurrencyShims
+    privacy_info:
+      present: true
+      tracking: true
+      tracking_domains:
+        - domain1.com
+        - domain2.com
+      collected_data_types:
+        - data_type: NSPrivacyCollectedDataTypeUserID
+          linked_to_user: true
+          tracking: false
+          purposes:
+            - NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising
+            - NSPrivacyCollectedDataTypePurposeDeveloperAdvertising
+            - NSPrivacyCollectedDataTypePurposeAnalytics
+            - NSPrivacyCollectedDataTypePurposeProductPersonalization
+        - data_type: NSPrivacyCollectedDataTypeDeviceID
+          linked_to_user: true
+          tracking: true
+          purposes:
+            - ''
+            - NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising
+            - NSPrivacyCollectedDataTypePurposeDeveloperAdvertising
+            - NSPrivacyCollectedDataTypePurposeAnalytics
+            - NSPrivacyCollectedDataTypePurposeProductPersonalization
+        - data_type: NSPrivacyCollectedDataTypeProductInteraction
+          linked_to_user: true
+          tracking: true
+          purposes:
+            - NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising
+            - NSPrivacyCollectedDataTypePurposeDeveloperAdvertising
+            - NSPrivacyCollectedDataTypePurposeAnalytics
+            - NSPrivacyCollectedDataTypePurposeProductPersonalization
+            - NSPrivacyCollectedDataTypePurposeAppFunctionality
+        - data_type: NSPrivacyCollectedDataTypeAdvertisingData
+          linked_to_user: true
+          tracking: true
+          purposes:
+            - NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising
+            - NSPrivacyCollectedDataTypePurposeDeveloperAdvertising
+        - data_type: NSPrivacyCollectedDataTypeOtherUsageData
+          linked_to_user: true
+          tracking: true
+          purposes:
+            - NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising
+            - NSPrivacyCollectedDataTypePurposeDeveloperAdvertising
+            - NSPrivacyCollectedDataTypePurposeAnalytics
+            - NSPrivacyCollectedDataTypePurposeProductPersonalization
+            - NSPrivacyCollectedDataTypePurposeAppFunctionality
+        - data_type: NSPrivacyCollectedDataTypeCrashData
+          linked_to_user: true
+          tracking: false
+          purposes:
+            - NSPrivacyCollectedDataTypePurposeAnalytics
+            - NSPrivacyCollectedDataTypePurposeAppFunctionality
+        - data_type: NSPrivacyCollectedDataTypeOtherDiagnosticData
+          linked_to_user: true
+          tracking: true
+          purposes:
+            - NSPrivacyCollectedDataTypePurposeAnalytics
+            - NSPrivacyCollectedDataTypePurposeAppFunctionality
+      accessed_api_types:
+        - api: NSPrivacyAccessedAPICategoryUserDefaults
+          reasons:
+            - 1C8F.1
+        - api: NSPrivacyAccessedAPICategoryFileTimestamp
+          reasons:
+            - C617.1
+        - api: NSPrivacyAccessedAPICategoryUserDefaults
+          reasons:
+            - CA92.1
+        - api: NSPrivacyAccessedAPICategorySystemBootTime
+          reasons:
+            - 35F9.1
+        - api: NSPrivacyAccessedAPICategoryDiskSpace
+          reasons:
+            - E174.1
 ````
 
 ## Contributing
